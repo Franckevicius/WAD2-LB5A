@@ -10,7 +10,7 @@ class Ingredient(models.Model):
  
 
     def __str__(self):
-        return self.name
+        return f"{self.name}: {self.quantity}{self.units}"
 
 
     class Meta:
@@ -18,7 +18,7 @@ class Ingredient(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE) # stores username, password, email
     about_me = models.CharField(max_length=256)
 
 
@@ -43,7 +43,7 @@ class Recipe(models.Model):
         
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.title)
         super(Recipe, self).save(*args, **kwargs)
 
 
