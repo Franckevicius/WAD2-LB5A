@@ -31,7 +31,7 @@ class UserProfile(models.Model):
 
 
 class Recipe(models.Model):    
-    author = models.ForeignKey(UserProfile)    
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)    
     title = models.CharField(max_length=128)
     title_slug = models.SlugField()
     ingredients = models.ManyToManyField(Ingredient)
@@ -59,7 +59,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=4096)
     time_posted = models.DateTimeField(auto_now_add=True) # Save creation timestamp
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True)    
-    author = models.ForeignKey(UserProfile, on_delete=models.SET_NULL) # Leave comments if user profile is deleted. Consider SET_DEFAULT instead of SET_NULL    
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE) # Consider on_delete SET_DEFAULT
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
 
