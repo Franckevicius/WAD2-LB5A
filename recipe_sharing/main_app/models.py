@@ -64,7 +64,7 @@ class Comment(models.Model):
 
 
     def __str__(self):
-        return self.time_posted
+        return f"{self.time_posted} by {str(self.author)}"
 
 
     class Meta:

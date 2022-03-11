@@ -38,6 +38,11 @@ def create_recipe(author:UserProfile, title:str, ingredients:List[Ingredient], d
     return r
 
 
+def create_comment(content:str, author:UserProfile, recipe:Recipe):
+    c = Comment.objects.get_or_create(content=content, author=author, recipe=recipe)[0]
+    c.save()
+    return c
+
 def populate():
     ingredient_objects, user_objects, recipe_objects = [], [], []
     
@@ -85,6 +90,18 @@ def populate():
     for recipe in Recipe.objects.all():
         print(recipe)
 
+    comment_data = [
+        {"content":"Comment1", "author":user_objects[0], "recipe":recipe_objects[0]},
+        {"content":"Comment1", "author":user_objects[1], "recipe":recipe_objects[1]},
+        {"content":"Comment1", "author":user_objects[2], "recipe":recipe_objects[2]},
+        {"content":"Comment1", "author":user_objects[3], "recipe":recipe_objects[3]},
+    ]
+
+    for comment in comment_data:
+        create_comment(**comment)
+
+    for comment in Comment.objects.all():
+        print(comment)
 
 if __name__ == "__main__":
     populate()
