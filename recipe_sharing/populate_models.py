@@ -1,6 +1,6 @@
 import os
 from tokenize import String
-from typing import List
+from typing import List, Dict
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'recipe_sharing.settings')
@@ -8,12 +8,12 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 import django
 django.setup()
 
-from main_app.models import Ingredient, UserProfile, Recipe, Comment
+from main_app.models import Ingredient, UserProfile, Recipe, Comment, RecipeToIngredient
 from django.contrib.auth.models import User
 
 
-def create_ingredient(name:str, quantity:int, units:str):
-    u = Ingredient.objects.get_or_create(name=name, quantity=quantity, units=units)[0]
+def create_ingredient(name:str, units:str):    
+    u = Ingredient.objects.get_or_create(name=name, units=units)[0]
     u.save()
     return u
 
@@ -33,9 +33,17 @@ def create_recipe(author:UserProfile, title:str, ingredients:List[Ingredient], d
     r = Recipe.objects.get_or_create(author=author, title=title, description=description, estimated_nutrition=estimated_nutrition, 
                                      estimated_price=estimated_price, minutes_to_prepare=minutes_to_prepare)[0]    
     r.picture = picture
-    r.ingredients.set(ingredients)
     r.save()
     return r
+
+
+def map_ingredient_quantities_to_recipe(recipe:Recipe, ingredient_quantities):
+    maps = []
+    for ingredient, ingredient_quantity in ingredient_quantities.items(): #Dict(Ingredient, int)
+        recipe_ingredient_map = RecipeToIngredient(recipe=recipe, ingredient=ingredient, ingredient_quantity=ingredient_quantity)
+        recipe_ingredient_map.save()    
+        maps.append(recipe_ingredient_map)
+    return maps
 
 
 def create_comment(content:str, author:UserProfile, recipe:Recipe):
@@ -43,14 +51,16 @@ def create_comment(content:str, author:UserProfile, recipe:Recipe):
     c.save()
     return c
 
+
 def populate():
-    ingredient_objects, user_objects, recipe_objects = [], [], []
+    #replace duplicate lists and instead query Django object sets -- do they retain order?
+    ingredient_objects, user_objects, recipe_objects, ingredient_quantity_maps = [], [], [], []
     
     ingredient_data = [
-        {"name":"Water", "quantity":100, "units":"ml" },
-        {"name":"Tomato", "quantity":200, "units":"g" },
-        {"name":"Potato", "quantity":500, "units":"g" },
-        {"name":"Salt", "quantity":5, "units":"g" },
+        {"name":"Water", "units":"ml" },
+        {"name":"Tomato", "units":"g" },
+        {"name":"Potato", "units":"g" },
+        {"name":"Salt", "units":"g" },        
     ]
 
     user_data = [
@@ -74,21 +84,59 @@ def populate():
         print(user)
 
     recipe_data = [
-        {"author":user_objects[0], "title":"Recipe1", "ingredients":[ingredient_objects[0], ingredient_objects[1]], "description":"desc1", 
-         "estimated_nutrition":1, "estimated_price":1, "minutes_to_prepare":15, "picture":"pictures_placeholder/1.png"},
-        {"author":user_objects[1], "title":"Recipe2", "ingredients":[ingredient_objects[1], ingredient_objects[2]], "description":"desc2", 
-         "estimated_nutrition":2, "estimated_price":2, "minutes_to_prepare":25, "picture":"pictures_placeholder/2.png"},
-        {"author":user_objects[2], "title":"Recipe3", "ingredients":[ingredient_objects[2], ingredient_objects[3]], "description":"desc3", 
-        "estimated_nutrition":3, "estimated_price":3, "minutes_to_prepare":35, "picture":"pictures_placeholder/3.png"},
-        {"author":user_objects[3], "title":"Recipe4", "ingredients":[ingredient_objects[3], ingredient_objects[2]], "description":"desc4", 
-         "estimated_nutrition":2, "estimated_price":2, "minutes_to_prepare":45, "picture":"pictures_placeholder/4.png"},        
+        {
+            "author":user_objects[0],
+            "title":"Recipe1",
+            "ingredients_quantities":{ {ingredient_objects[0] : 100}, {ingredient_objects[1] : 200} }, 
+            "description":"desc1", 
+            "estimated_nutrition":1, 
+            "estimated_price":1, 
+            "minutes_to_prepare":15,
+            "picture":"pictures_placeholder/1.png"
+        },
+        {
+            "author":user_objects[1],
+            "title":"Recipe2",
+            "ingredients_quantities":{ {ingredient_objects[1] : 250}, {ingredient_objects[2] : 350} }, 
+            "description":"desc2", 
+            "estimated_nutrition":2, 
+            "estimated_price":2, 
+            "minutes_to_prepare":25,
+            "picture":"pictures_placeholder/2.png"
+        },
+        {
+            "author":user_objects[2], 
+            "title":"Recipe3", 
+            "ingredients_quantities":{ {ingredient_objects[2] : 100}, {ingredient_objects[3]:100} },
+            "description":"desc3", 
+            "estimated_nutrition":3,
+            "estimated_price":3,
+            "minutes_to_prepare":35,
+            "picture":"pictures_placeholder/3.png"
+        },
+        {
+            "author":user_objects[3],
+            "title":"Recipe4", 
+            "ingredients_quantities":{ {ingredient_objects[3] : 100}, {ingredient_objects[1] : 50} }, 
+            "description":"desc4", 
+            "estimated_nutrition":2, 
+            "estimated_price":2,
+            "minutes_to_prepare":45,
+            "picture":"pictures_placeholder/4.png"},        
     ]
 
     for recipe in recipe_data:
-        recipe_objects.append(create_recipe(**recipe))
+        r = create_recipe(**({k:v for k,v in recipe.items() if k != "ingredients_quantities"}))
+        recipe_objects.append(r)
+        ingredient_quantity_maps.append(
+            map_ingredient_quantities_to_recipe(r, recipe_data["ingredients_quantities"])
+        )
 
-    for recipe in Recipe.objects.all():
+    for i, recipe in enumerate(Recipe.objects.all()):
         print(recipe)
+        for ingredient_quantity in ingredient_quantity_maps[i]:
+            print(ingredient_quantity)
+
 
     comment_data = [
         {"content":"Comment1", "author":user_objects[0], "recipe":recipe_objects[0]},
