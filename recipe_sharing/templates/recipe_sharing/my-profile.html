@@ -1,0 +1,28 @@
+{% extends 'recipe_sharing/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Homepage
+{% endblock %}
+{% block body_block %}
+<div>
+{% if user.is_authenticated %}
+{{ user.username }}!
+{% else %}
+ERROR
+{% endif %}
+</div>
+<div>
+    <h2>Saved Recipes</h2>
+        {% if recipes %}
+            <div>
+                {% for recipe in recipes %}
+                    <div>
+                        <li><a href="{% url 'show_recipe' recipe.slug %}">{{ recipe.name }}</a></li>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+        <strong>There are no pages present.</strong>'
+        {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'recipe_sharing/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Homepage
+{% endblock %}
+{% block body_block %}
+<div>
+{% if user.is_authenticated %}
+{{ user.username }}!
+{% else %}
+ERROR
+{% endif %}
+</div>
+<div>
+{% if recipes %}
+<ul>
+    {% for recipe in recipes %}
+    <li><a href="/{{ user.username }}/{{ recipe.slug }}/">{{ recipe.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+<strong>There are no recipes present.</strong>
+{% endif %}
+</div>
+{% endblock %}

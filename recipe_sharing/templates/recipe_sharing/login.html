@@ -1,0 +1,16 @@
+{% extends 'recipe_sharing/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+Login
+{% endblock %}
+{% block body_block %}
+
+<form id="login_form" method="post" action="{% url 'recipe_sharing:login' %}">
+{% csrf_token %}
+<h4>Username: <input type="text" name="username" value="" size="100" /></h4>
+
+<h4>Password:  <input type="password" name="password" value="" size="100" /></h6>
+
+<input type="submit" value="submit" />
+</form>
+{% endblock %}

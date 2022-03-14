@@ -1,0 +1,28 @@
+{% extends 'recipe_sharing/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+{% if recipe %}
+{{ recipe.name }}
+{% else %}
+Unknown recipe
+{% endif %}
+{% endblock %}
+
+{% block body_block %}
+<ul>
+    {% if recipes %}
+    {% for r in recipes %}
+    <li><a href="{% url 'recipe_sharing:show_recipes' r.slug %}">{{ r.name }}</a></li>
+    {% endfor %}
+    {% else %}
+    <li><strong>There are no recipes present.</strong></li>
+    {% endif %}
+</ul>
+
+<a href="{% url 'recipe_sharing:add_recipe' recipe.slug %}">Add recepie</a> <br />
+{% else %}
+The specified recipe does not exist.
+{% endif %}
+{% endblock %}
+
