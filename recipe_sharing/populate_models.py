@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 
 
 def create_ingredient(name:str, units:str):    
+    print(name, units)
     u = Ingredient.objects.get_or_create(name=name, units=units)[0]
     u.save()
     return u
@@ -28,8 +29,8 @@ def create_user(username:str, email:str, password:str, about_me:str):
     return u
 
 
-def create_recipe(author:UserProfile, title:str, ingredients:List[Ingredient], description:str, 
-                  estimated_nutrition:int, estimated_price:int, minutes_to_prepare:int, picture:str):
+def create_recipe(author:UserProfile, title:str, description:str,  estimated_nutrition:int,
+                  estimated_price:int, minutes_to_prepare:int, picture:str):
     r = Recipe.objects.get_or_create(author=author, title=title, description=description, estimated_nutrition=estimated_nutrition, 
                                      estimated_price=estimated_price, minutes_to_prepare=minutes_to_prepare)[0]    
     r.picture = picture
@@ -37,9 +38,9 @@ def create_recipe(author:UserProfile, title:str, ingredients:List[Ingredient], d
     return r
 
 
-def map_ingredient_quantities_to_recipe(recipe:Recipe, ingredient_quantities):
+def map_ingredient_quantities_to_recipe(recipe:Recipe, ingredients:List[Ingredient], ingredients_quantities:List[int]):
     maps = []
-    for ingredient, ingredient_quantity in ingredient_quantities.items(): #Dict(Ingredient, int)
+    for ingredient, ingredient_quantity in zip(ingredients, ingredients_quantities):
         recipe_ingredient_map = RecipeToIngredient(recipe=recipe, ingredient=ingredient, ingredient_quantity=ingredient_quantity)
         recipe_ingredient_map.save()    
         maps.append(recipe_ingredient_map)
@@ -87,7 +88,8 @@ def populate():
         {
             "author":user_objects[0],
             "title":"Recipe1",
-            "ingredients_quantities":{ {ingredient_objects[0] : 100}, {ingredient_objects[1] : 200} }, 
+            "ingredients": [ ingredient_objects[0], ingredient_objects[1] ],
+            "ingredients_quantities":[ 100, 200 ], 
             "description":"desc1", 
             "estimated_nutrition":1, 
             "estimated_price":1, 
@@ -97,7 +99,8 @@ def populate():
         {
             "author":user_objects[1],
             "title":"Recipe2",
-            "ingredients_quantities":{ {ingredient_objects[1] : 250}, {ingredient_objects[2] : 350} }, 
+            "ingredients": [ ingredient_objects[1], ingredient_objects[2] ],
+            "ingredients_quantities":[ 250, 350 ], 
             "description":"desc2", 
             "estimated_nutrition":2, 
             "estimated_price":2, 
@@ -107,7 +110,8 @@ def populate():
         {
             "author":user_objects[2], 
             "title":"Recipe3", 
-            "ingredients_quantities":{ {ingredient_objects[2] : 100}, {ingredient_objects[3]:100} },
+            "ingredients": [ingredient_objects[2], ingredient_objects[3] ],
+            "ingredients_quantities":[ 100, 100 ],
             "description":"desc3", 
             "estimated_nutrition":3,
             "estimated_price":3,
@@ -117,19 +121,21 @@ def populate():
         {
             "author":user_objects[3],
             "title":"Recipe4", 
-            "ingredients_quantities":{ {ingredient_objects[3] : 100}, {ingredient_objects[1] : 50} }, 
+            "ingredients": [ingredient_objects[3], ingredient_objects[1] ],
+            "ingredients_quantities":[ 100, 50 ], 
             "description":"desc4", 
             "estimated_nutrition":2, 
             "estimated_price":2,
             "minutes_to_prepare":45,
-            "picture":"pictures_placeholder/4.png"},        
+            "picture":"pictures_placeholder/4.png"
+        },        
     ]
 
     for recipe in recipe_data:
-        r = create_recipe(**({k:v for k,v in recipe.items() if k != "ingredients_quantities"}))
+        r = create_recipe(**({k:v for k,v in recipe.items() if not k.startswith("ingredient") }))
         recipe_objects.append(r)
         ingredient_quantity_maps.append(
-            map_ingredient_quantities_to_recipe(r, recipe_data["ingredients_quantities"])
+            map_ingredient_quantities_to_recipe(r, recipe["ingredients"], recipe["ingredients_quantities"])
         )
 
     for i, recipe in enumerate(Recipe.objects.all()):
