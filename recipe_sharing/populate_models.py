@@ -19,12 +19,11 @@ def create_ingredient(name:str, units:str):
     return u
 
 
-def create_user(username:str, email:str, password:str, about_me:str):
-    # Will break if user already exists/duplicate info
-    # Short workaround - delete db, make migration, migrate
-    # Longterm - add handling to detect if such user already exists, or don't use manager and add custom initialization
-    django_user = User.objects.create_user(username, email, password) 
-    u = UserProfile.objects.get_or_create(user=django_user, about_me=about_me)[0]
+def create_user(username:str, email:str, password:str, about_me:str):    
+    django_default_user, is_new_user = User.objects.get_or_create(username=username, email=email)
+    if is_new_user:
+        django_default_user.set_password(password)
+    u = UserProfile.objects.get_or_create(user=django_default_user, about_me=about_me)[0]
     u.save()
     return u
 
