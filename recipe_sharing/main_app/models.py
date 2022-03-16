@@ -74,7 +74,7 @@ class Comment(models.Model):
 
 
     def __str__(self):
-        return f"{self.time_posted} by {str(self.author)}"
+        return f"{self.time_posted} by {str(self.author)} on post {str(self.recipe)}: {self.content}. \n Parent Comment: {str(self.parent_comment)}"
 
 
     class Meta:

@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import os
 from tokenize import String
 from typing import List, Dict
@@ -46,15 +47,16 @@ def map_ingredient_quantities_to_recipe(recipe:Recipe, ingredients:List[Ingredie
     return maps
 
 
-def create_comment(content:str, author:UserProfile, recipe:Recipe):
+def create_comment(content:str, author:UserProfile, recipe:Recipe, parent_comment:Comment):
     c = Comment.objects.get_or_create(content=content, author=author, recipe=recipe)[0]
+    c.parent_comment = parent_comment
     c.save()
     return c
 
 
 def populate():
     #replace duplicate lists and instead query Django object sets -- do they retain order?
-    ingredient_objects, user_objects, recipe_objects, ingredient_quantity_maps = [], [], [], []
+    ingredient_objects, user_objects, recipe_objects, ingredient_quantity_maps, comments = [], [], [], [], []
     
     ingredient_data = [
         {"name":"Water", "units":"ml" },
@@ -144,14 +146,25 @@ def populate():
 
 
     comment_data = [
-        {"content":"Comment1", "author":user_objects[0], "recipe":recipe_objects[0]},
-        {"content":"Comment1", "author":user_objects[1], "recipe":recipe_objects[1]},
-        {"content":"Comment1", "author":user_objects[2], "recipe":recipe_objects[2]},
-        {"content":"Comment1", "author":user_objects[3], "recipe":recipe_objects[3]},
+        {"content":"Comment1", "author":user_objects[0], "recipe":recipe_objects[0], "parent_comment":None},
+        {"content":"Comment2", "author":user_objects[1], "recipe":recipe_objects[1], "parent_comment":None},
+        {"content":"Comment3", "author":user_objects[2], "recipe":recipe_objects[2], "parent_comment":None},
+        {"content":"Comment4", "author":user_objects[3], "recipe":recipe_objects[3], "parent_comment":None},
     ]
 
     for comment in comment_data:
-        create_comment(**comment)
+        comments.append(create_comment(**comment))
+
+    #could add constraints that replies must be made on the same recipe page, but will most likely
+    #be automatically enforced client-side
+    replies_data = [
+        {"content":"Comment5", "author":user_objects[1], "recipe":recipe_objects[0], "parent_comment":comments[0]},
+        {"content":"Comment6", "author":user_objects[2], "recipe":recipe_objects[0], "parent_comment":comments[0]},
+        {"content":"Comment7", "author":user_objects[3], "recipe":recipe_objects[0], "parent_comment":comments[1]},
+    ]
+
+    for reply in replies_data:
+        comments.append(create_comment(**reply))
 
     for comment in Comment.objects.all():
         print(comment)
