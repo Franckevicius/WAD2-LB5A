@@ -29,9 +29,18 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Ingredients'
 
 
+class Tag(models.Model):
+    content = models.CharField(max_length=64, unique=True, default="")
+
+    def save(self, *args, **kwargs):
+        self.content = self.content.lower()
+        super(Tag, self).save(*args, **kwargs)
+
+
 class Recipe(models.Model):    
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='%(class)s_author_user')    
-    users_who_saved = models.ManyToManyField(UserProfile, blank=True, related_name='%(class)s_saved_user')
+    users_who_saved = models.ManyToManyField(UserProfile, blank=True, related_name='%(class)s_saved_user')    
+    tags = models.ManyToManyField(Tag)
     title = models.CharField(max_length=128)
     title_slug = models.SlugField()
     ingredients = models.ManyToManyField(Ingredient, through='RecipeToIngredient')    

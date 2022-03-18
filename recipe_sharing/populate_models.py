@@ -3,13 +3,14 @@ import os
 from tokenize import String
 from typing import List, Dict
 
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'recipe_sharing.settings')
 
 import django
 django.setup()
 
-from main_app.models import Ingredient, UserProfile, Recipe, Comment, RecipeToIngredient
+from main_app.models import Ingredient, UserProfile, Recipe, Comment, RecipeToIngredient, Tag
 from django.contrib.auth.models import User
 
 
@@ -30,10 +31,13 @@ def create_user(username:str, email:str, password:str, about_me:str):
 
 
 def create_recipe(author:UserProfile, title:str, description:str,  estimated_nutrition:int,
-                  estimated_price:int, minutes_to_prepare:int, picture:str):
+                  estimated_price:int, minutes_to_prepare:int, picture:str,
+                  users_who_saved: List[UserProfile], tags: List[Tag]):
     r = Recipe.objects.get_or_create(author=author, title=title, description=description, estimated_nutrition=estimated_nutrition, 
                                      estimated_price=estimated_price, minutes_to_prepare=minutes_to_prepare)[0]    
     r.picture = picture
+    r.users_who_saved.set(users_who_saved)
+    r.tags.set(tags)
     r.save()
     return r
 
@@ -85,6 +89,12 @@ def populate():
     for user in UserProfile.objects.all():
         print(user)
 
+    tags = []
+    for t in ["Vegetarian", "Meat", "Dairy", "Spicy"]:
+        tag = Tag(content=t)
+        tag.save()
+        tags.append(tag)
+
     recipe_data = [
         {
             "author":user_objects[0],
@@ -95,7 +105,9 @@ def populate():
             "estimated_nutrition":1, 
             "estimated_price":1, 
             "minutes_to_prepare":15,
-            "picture":"pictures_placeholder/1.png"
+            "picture":"pictures_placeholder/1.png",
+            "users_who_saved":[user_objects[1], user_objects[2]],
+            "tags":[tags[0], tags[3]]
         },
         {
             "author":user_objects[1],
@@ -106,7 +118,9 @@ def populate():
             "estimated_nutrition":2, 
             "estimated_price":2, 
             "minutes_to_prepare":25,
-            "picture":"pictures_placeholder/2.png"
+            "picture":"pictures_placeholder/2.png",
+            "users_who_saved":[user_objects[0]],
+            "tags":[tags[1], tags[3]]
         },
         {
             "author":user_objects[2], 
@@ -117,7 +131,9 @@ def populate():
             "estimated_nutrition":3,
             "estimated_price":3,
             "minutes_to_prepare":35,
-            "picture":"pictures_placeholder/3.png"
+            "picture":"pictures_placeholder/3.png",
+            "users_who_saved":[],
+            "tags":[tags[1], tags[2]]
         },
         {
             "author":user_objects[3],
@@ -128,7 +144,9 @@ def populate():
             "estimated_nutrition":2, 
             "estimated_price":2,
             "minutes_to_prepare":45,
-            "picture":"pictures_placeholder/4.png"
+            "picture":"pictures_placeholder/4.png",
+            "users_who_saved":[user_objects[0], user_objects[1], user_objects[2]],
+            "tags":[tags[1]]
         },        
     ]
 
@@ -147,7 +165,7 @@ def populate():
 
     comment_data = [
         {"content":"Comment1", "author":user_objects[0], "recipe":recipe_objects[0], "parent_comment":None},
-        {"content":"Comment2", "author":user_objects[1], "recipe":recipe_objects[1], "parent_comment":None},
+        {"content":"Comment2", "author":user_objects[1], "recipe":recipe_objects[0], "parent_comment":None},
         {"content":"Comment3", "author":user_objects[2], "recipe":recipe_objects[2], "parent_comment":None},
         {"content":"Comment4", "author":user_objects[3], "recipe":recipe_objects[3], "parent_comment":None},
     ]
