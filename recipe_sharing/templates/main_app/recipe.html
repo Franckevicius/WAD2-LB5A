@@ -1,28 +1,27 @@
-{% extends 'recipe_sharing/base.html' %}
+{% extends 'main_app/base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
-{% if recipe %}
-{{ recipe.name }}
-{% else %}
-Unknown recipe
-{% endif %}
+    {% if recipe %}
+        {{ recipe.title }}
+        {{ recipe.description }}  
+        Recipe has estimated cost of {{ recipe.estimated_cost }} / 3
+        Recipe has estimated nutrition of {{ recipe.estimated_nutrition}} / 3
+        It should take {{ recipe.minutes_to_prepare }}  mins to prepare
+    {% else %}
+        Unknown recipe
+    {% endif %}
 {% endblock %}
 
 {% block body_block %}
 <ul>
-    {% if recipes %}
-    {% for r in recipes %}
-    <li><a href="{% url 'recipe_sharing:show_recipes' r.slug %}">{{ r.name }}</a></li>
-    {% endfor %}
+    {% if recipe.recipetoingredient_set.all%}
+        <h2> This recipe contains the following ingredients: </h2>
+        {% for map in recipe.recipetoingredient_set.all %}
+            <li>{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }} </a></li>
+        {% endfor %}
     {% else %}
-    <li><strong>There are no recipes present.</strong></li>
+         <li><strong>Recipe has no attached ingredients present.</strong></li>
     {% endif %}
 </ul>
-
-<a href="{% url 'recipe_sharing:add_recipe' recipe.slug %}">Add recepie</a> <br />
-{% else %}
-The specified recipe does not exist.
-{% endif %}
 {% endblock %}
-

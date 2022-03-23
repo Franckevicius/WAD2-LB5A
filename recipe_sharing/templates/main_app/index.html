@@ -1,8 +1,21 @@
 {% extends "main_app/base.html" %}
-    {% block title_block %}
-        Index title block
-    {% endblock %}
+{% block title_block %}
+    Index title block
+{% endblock %}
 
 {% block body_block %}
-    Index body
+    Index body block
+
+    <div>
+        <h2>All recipes</h2>
+            {% if recipes %}
+                <ul>
+                {% for recipe in recipes %}
+                    <li><a href="{% url 'main_app:render_recipe' recipe.title_slug %}">{{ recipe.title }} by {{recipe.author}}</a></li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <strong>No recipes found</strong>
+            {% endif %}
+    </div>
 {% endblock %}

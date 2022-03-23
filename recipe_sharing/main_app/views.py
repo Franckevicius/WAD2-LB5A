@@ -6,14 +6,24 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from datetime import datetime
+from .models import Recipe
 
 def index(request):
     context_dict = {}
-    context_dict['boldmessage'] = 'This is the index page'
+    context_dict["recipes"] = Recipe.objects.all()    
+    return render(request, 'main_app/index.html', context=context_dict)
 
-    response = render(request, 'main_app/index.html', context=context_dict)
-    return response
+
+def render_recipe(request, recipe_title_slug):
+    context = {"recipe" : None}
+    try:
+        context["recipe"] = Recipe.objects.get(title_slug=recipe_title_slug)
+    except Recipe.DoesNotExist:
+        pass
+
+    return render(request, "main_app/recipe.html", context=context)
+
+
 
 def about(request):
     context_dict = {}
