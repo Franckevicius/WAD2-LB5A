@@ -12,6 +12,6 @@ urlpatterns = [
     #path('login/', views.user_login, name='login'),
     #path('my-profile/', views.user_profile, name='my-profile'),
     #path('my-profile/saved/', views.profile_saved, name='profile_saved'),
-    #path('search/', views.search, name='search'),
+    path('search/', views.search, name='search'),
     #path('submit/', views.submit, name='submit'),
 ]

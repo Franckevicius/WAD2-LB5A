@@ -32,6 +32,11 @@ def about(request):
     response = render(request, 'main_app/about.html', context=context_dict)
     return response
 
+
+def search(request):
+    return render(request, "main_app/search.html", context={})
+
+
 # def register(request):
 
 #     registered = False

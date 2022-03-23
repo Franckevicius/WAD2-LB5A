@@ -1,16 +1,9 @@
-{% extends 'recipe_sharing/base.html' %}
-{% load staticfiles %}
+{% extends 'main_app/base.html' %}
 {% block title_block %}
 {% endblock %}
 
 {% block body_block %}
 
-<form type="get" action="exact_url" > 
-    <input  id="search_box" type="text" name="search_box"  placeholder="Search..." > 
-    <button id="search_submit" type="submit" >Submit</button> 
-</form> 
+<input  id="ingredient_input" type="text" name="ingredient_input"  placeholder="Input space separated ingredients..." > 
 
-</div>
-</body>
-</html>
 {% endblock %}
