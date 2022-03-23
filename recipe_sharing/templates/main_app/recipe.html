@@ -2,19 +2,20 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    {% if recipe %}
-        {{ recipe.title }}
-        {{ recipe.description }}  
-        Recipe has estimated cost of {{ recipe.estimated_cost }} / 3
-        Recipe has estimated nutrition of {{ recipe.estimated_nutrition}} / 3
-        It should take {{ recipe.minutes_to_prepare }}  mins to prepare
-    {% else %}
-        Unknown recipe
-    {% endif %}
+
 {% endblock %}
 
 {% block body_block %}
 <ul>
+    {% if recipe %}
+        <h3>{{ recipe.title }}</h3>        
+        Recipe has estimated price of {{ recipe.estimated_price }} / 3 <br>
+        Recipe has estimated nutrition of {{ recipe.estimated_nutrition}} / 3 <br> <br>
+        It should take {{ recipe.minutes_to_prepare }}  mins to prepare
+    {% else %}
+        Unknown recipe
+    {% endif %}
+
     {% if recipe.recipetoingredient_set.all%}
         <h2> This recipe contains the following ingredients: </h2>
         {% for map in recipe.recipetoingredient_set.all %}
@@ -23,5 +24,17 @@
     {% else %}
          <li><strong>Recipe has no attached ingredients present.</strong></li>
     {% endif %}
+
+    {% if recipe.tags.all%}
+    <h2> This recipe contains the following tags: </h2>
+    {% for tag in recipe.tags.all %}
+        <li>#{{ tag.content }} </a></li>
+    {% endfor %}
+        {% else %}
+    <h2> This recipe has no attached tags.</h2>
+        {% endif %}
+
+    <h2>Instructions:</h2>
+    {{ recipe.description }}
 </ul>
 {% endblock %}
