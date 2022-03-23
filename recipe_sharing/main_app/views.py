@@ -3,10 +3,11 @@ from django.shortcuts import redirect
 from django.urls import reverse
 #from main_app.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .models import Recipe
+
 
 def index(request):
     context_dict = {}
@@ -24,7 +25,6 @@ def render_recipe(request, recipe_title_slug):
     return render(request, "main_app/recipe.html", context=context)
 
 
-
 def about(request):
     context_dict = {}
     context_dict['boldmessage'] = 'This is the about page'
@@ -34,7 +34,12 @@ def about(request):
 
 
 def search(request):
-    return render(request, "main_app/search.html", context={})
+    search_query = request.get.GET("ingredient_input", None)
+    context = {"recipes":[]}
+    for ingredient in str.split(search_query, " "):        
+        context["recipes"].append(Recipe.objects.filter(ingredients__contains=ingredient))  
+
+    return JsonResponse(context)
 
 
 # def register(request):
