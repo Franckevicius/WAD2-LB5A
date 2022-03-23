@@ -1,10 +1,10 @@
-{% extends "recipe_sharing/base.html" %}
+{% extends "main_app/base.html" %}
 {% block title_block %}
 Add a recipe
 {% endblock %}
 {% block body_block %}
 <h1>Add a recipe</h1>
-<form id="recipe_form" method="post" action="/recipe_sharing/add_recipe/">
+<form id="recipe_form" method="post" action="/main_app/add_recipe/">
 {% csrf_token %}
 {% for hidden in form.hidden_fields %}
 {{ hidden }}

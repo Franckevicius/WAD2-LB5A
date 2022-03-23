@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.urls import reverse
-from main_app.forms import UserForm, UserProfileForm
+#from main_app.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -22,40 +22,40 @@ def about(request):
     response = render(request, 'main_app/about.html', context=context_dict)
     return response
 
-def register(request):
+# def register(request):
 
-    registered = False
+#     registered = False
 
-    if request.method =='POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+#     if request.method =='POST':
+#         user_form = UserForm(request.POST)
+#         profile_form = UserProfileForm(request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+#         if user_form.is_valid() and profile_form.is_valid():
+#             user = user_form.save()
 
-            user.set_password(user.password)
-            user.save()
+#             user.set_password(user.password)
+#             user.save()
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
+#             profile = profile_form.save(commit=False)
+#             profile.user = user
 
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['pictures']
+#             if 'picture' in request.FILES:
+#                 profile.picture = request.FILES['pictures']
 
-            profile.save()
+#             profile.save()
 
-            registered = True
-        else:
-            print(user_form.errors, profile_form.errors)
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
+#             registered = True
+#         else:
+#             print(user_form.errors, profile_form.errors)
+#     else:
+#         user_form = UserForm()
+#         profile_form = UserProfileForm()
 
-    return render(request,
-                  'main_app/register.html',
-                  context = {'user_form': user_form,
-                             'profile_form': profile_form,
-                             'registered': registered})
+#     return render(request,
+#                   'main_app/register.html',
+#                   context = {'user_form': user_form,
+#                              'profile_form': profile_form,
+#                              'registered': registered})
 
 def user_login(request):
     if request.method == 'POST':
