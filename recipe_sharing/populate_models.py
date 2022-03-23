@@ -1,6 +1,4 @@
-from asyncio.windows_events import NULL
 import os
-from tokenize import String
 from typing import List, Dict
 
 
@@ -146,7 +144,7 @@ def populate():
             "minutes_to_prepare":45,
             "picture":"pictures_placeholder/4.png",
             "users_who_saved":[user_objects[0], user_objects[1], user_objects[2]],
-            "tags":[tags[1]]
+            "tags":[]
         },        
     ]
 

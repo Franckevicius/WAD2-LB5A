@@ -52,7 +52,7 @@ class Recipe(models.Model):
             
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
+        self.title_slug = slugify(self.title)
         super(Recipe, self).save(*args, **kwargs)
 
 
