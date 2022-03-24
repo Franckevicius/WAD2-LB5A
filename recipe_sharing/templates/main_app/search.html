@@ -10,9 +10,9 @@
     {% if recipes %}        
         {% for queryset in recipes %}
             {% for recipe in queryset %}    
-                <h4>{{ recipe.title }}</h4>                
+                <h4> <a href="{% url 'main_app:render_recipe' recipe.title_slug %}">{{ recipe.title }}</a> </h4>                
                 {% for map in recipe.recipetoingredient_set.all %}
-                    <li>{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }} </a></li>
+                    <li>{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }}</li>
                 {% endfor %}
             {% endfor %}
         {% endfor %}
