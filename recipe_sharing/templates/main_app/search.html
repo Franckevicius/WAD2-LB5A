@@ -7,12 +7,10 @@
 <input  id="ingredient_input" type="text" name="ingredient_input"  placeholder="Input space separated ingredients..." >
 
 <div id="recipe_search_results">
-    {% if recipes %}
-        {{ recipes }}
+    {% if recipes %}        
         {% for queryset in recipes %}
             {% for recipe in queryset %}    
-                <h4>{{ recipe.title }}</h4>
-                {{ recipe }}            
+                <h4>{{ recipe.title }}</h4>                
                 {% for map in recipe.recipetoingredient_set.all %}
                     <li>{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }} </a></li>
                 {% endfor %}

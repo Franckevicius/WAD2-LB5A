@@ -43,8 +43,8 @@ def get_filtered_recipes(search_query):
 def search(request):    
     search_query = "" if "ingredient_input" not in request.GET else request.GET["ingredient_input"]
     recipes = None if search_query=="" else get_filtered_recipes(search_query)
-    print(request.GET)
-    print(recipes)
+    #print(request.GET)
+    #print(recipes)
     return render(request, "main_app/search.html", {"recipes":recipes})
 
 
