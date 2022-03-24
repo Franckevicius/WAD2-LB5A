@@ -4,6 +4,23 @@
 
 {% block body_block %}
 
-<input  id="ingredient_input" type="text" name="ingredient_input"  placeholder="Input space separated ingredients..." > 
+<input  id="ingredient_input" type="text" name="ingredient_input"  placeholder="Input space separated ingredients..." >
+
+<div id="recipe_search_results">
+    {% if recipes %}
+        {{ recipes }}
+        {% for queryset in recipes %}
+            {% for recipe in queryset %}    
+                <h4>{{ recipe.title }}</h4>
+                {{ recipe }}            
+                {% for map in recipe.recipetoingredient_set.all %}
+                    <li>{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }} </a></li>
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        No recipe results
+    {% endif %}
+</div>
 
 {% endblock %}

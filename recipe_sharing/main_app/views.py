@@ -33,13 +33,19 @@ def about(request):
     return response
 
 
-def search(request):
-    search_query = request.get.GET("ingredient_input", None)
-    context = {"recipes":[]}
+def get_filtered_recipes(search_query):
+    recipes = []
     for ingredient in str.split(search_query, " "):        
-        context["recipes"].append(Recipe.objects.filter(ingredients__contains=ingredient))  
+        recipes.append(Recipe.objects.filter(recipetoingredient__ingredient__name__istartswith=ingredient.strip()))  
+    return recipes
 
-    return JsonResponse(context)
+
+def search(request):    
+    search_query = "" if "ingredient_input" not in request.GET else request.GET["ingredient_input"]
+    recipes = None if search_query=="" else get_filtered_recipes(search_query)
+    print(request.GET)
+    print(recipes)
+    return render(request, "main_app/search.html", {"recipes":recipes})
 
 
 # def register(request):
