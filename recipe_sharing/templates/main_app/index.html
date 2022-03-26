@@ -1,6 +1,8 @@
 {% extends "main_app/base.html" %}
+{% load staticfiles %}
+
 {% block title_block %}
-    Index title block
+    Index
 {% endblock %}
 
 {% block body_block %}
@@ -11,7 +13,15 @@
             {% if recipes %}
                 <ul>
                 {% for recipe in recipes %}
-                    <li><a href="{% url 'main_app:render_recipe' recipe.title_slug %}">{{ recipe.title }} by {{recipe.author}}</a></li>
+                    <div class="card" style="width: 18rem;">
+                        <img src="/pictures_placeholder/1.png" class="card-img-top" alt="recipe_pic">
+                        <div class="card-body">
+                            <h5 class="card-title">{{recipe.title}}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">by {{recipe.author}}</h6>
+                            <p class="card-text">{{recipe.description}}</p>
+                            <a href="{% url 'main_app:render_recipe' recipe.title_slug %}" class="btn btn-primary">Go to recipe.</a>
+                        </div>
+                    </div>
                 {% endfor %}
                 </ul>
             {% else %}

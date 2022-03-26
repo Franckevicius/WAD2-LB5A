@@ -1,8 +1,11 @@
 {% load static %}
+{% load staticfiles %}
 
 <!DOCTYPE html>
 <html>
 <head>    
+    <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet"> <!-- Added bootstrap css support -->
+    <script src="{% static 'js/bootstrap.min.jss'%}"></script> <!-- Added bootstrap js support (all files are in /static/js or css) -->
     <script type="text/javascript" src="{% static 'jquery-3.6.0.min.js' %}"></script> 
     <script type="text/javascript" src="{% static 'main_app-jquery.js' %}"></script>    
 <title>
@@ -12,7 +15,19 @@
 </title>
 </head>
 <body>
-
+    <!-- NAVBAR -->
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">                 
+                <a class="navbar-brand" href="{% url 'main_app:index' %}">Index</a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'main_app:about' %}">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'main_app:search' %}">Search</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- NAVBAR END -->
 {% block body_block %}
 {% endblock %}
 
