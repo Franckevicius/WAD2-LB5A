@@ -34,9 +34,22 @@ def about(request):
 
 
 def get_filtered_recipes(search_query):
-    recipes = []
-    for ingredient in str.split(search_query, " "):        
-        recipes.append(Recipe.objects.filter(recipetoingredient__ingredient__name__istartswith=ingredient.strip()))  
+    recipes = None
+    ingredients = [i.strip() for i in str.split(search_query, " ") if i != ""]
+    substrings = set()    
+
+    for ingredient in ingredients:        
+        if ingredient.isalpha() and ingredient not in substrings:
+            print("'"+ingredient+"'")
+            if recipes is None:
+                recipes = Recipe.objects.filter(recipetoingredient__ingredient__name__istartswith=ingredient)
+            else:
+                recipes &= Recipe.objects.filter(recipetoingredient__ingredient__name__istartswith=ingredient)
+            print(recipes)                
+            
+            for i in range(len(ingredient)):
+                substrings.add(ingredient[:i+1])
+        
     return recipes
 
 
