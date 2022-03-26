@@ -6,22 +6,20 @@
 {% endblock %}
 
 {% block body_block %}
-    Index body block        
-
-    <div>
-        <h2>All recipes</h2>
+    <div class="container d-flex justify-content-center flex-column">
             {% if recipes %}
-                <ul>
+                <ul class="container-fluid d-flex flex-row flex-wrap justify-content-evenly">
                 {% for recipe in recipes %}
-                    <div class="card" style="width: 18rem;">
-                        <img src="/pictures_placeholder/1.png" class="card-img-top" alt="recipe_pic">
+                    <li class="card" style="width: 18rem;">
+                        <img src="{{recipe.picture.url}}" class="card-img-top" alt="recipe_pic">
                         <div class="card-body">
                             <h5 class="card-title">{{recipe.title}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">by {{recipe.author}}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">imgsrc {{recipe.picture.url}}</h6>
                             <p class="card-text">{{recipe.description}}</p>
                             <a href="{% url 'main_app:render_recipe' recipe.title_slug %}" class="btn btn-primary">Go to recipe.</a>
                         </div>
-                    </div>
+                    </li>
                 {% endfor %}
                 </ul>
             {% else %}

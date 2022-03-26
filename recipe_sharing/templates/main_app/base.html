@@ -10,7 +10,7 @@
     <script type="text/javascript" src="{% static 'main_app-jquery.js' %}"></script>    
 <title>
 {% block title_block %}
-    Base title block    
+    Base    
 {% endblock %}
 </title>
 </head>
@@ -19,7 +19,9 @@
     <nav class="navbar navbar-expand-lg justify-content-evenly align-items-center">               
             <ul class="nav nav-fill">
                 <li class="nav-item"><a class="nav-link" href="{% url 'main_app:search' %}">Search</a></li>
+                <li class="nav-item"><a class="nav-link disabled">Saved</a></li> <!-- Currently a placeholder, until view works -->
                 <a class="navbar-brand" href="{% url 'main_app:index' %}">E-Recipe</a>
+                <li class="nav-item"><a class="nav-link disabled">Login</a></li> <!-- Currently a placeholder, until view works -->
                 <li class="nav-item"><a class="nav-link" href="{% url 'main_app:about' %}">About</a></li>
             </ul>
     </nav>
