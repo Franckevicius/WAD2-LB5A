@@ -16,28 +16,15 @@
 </head>
 <body>
     <!-- NAVBAR -->
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">                 
-                <a class="navbar-brand" href="{% url 'main_app:index' %}">Index</a>
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'main_app:about' %}">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'main_app:search' %}">Search</a></li>
-                </ul>
-            </div>
-        </nav>
-    </div>
+    <nav class="navbar navbar-expand-lg justify-content-evenly align-items-center">               
+            <ul class="nav nav-fill">
+                <li class="nav-item"><a class="nav-link" href="{% url 'main_app:search' %}">Search</a></li>
+                <a class="navbar-brand" href="{% url 'main_app:index' %}">E-Recipe</a>
+                <li class="nav-item"><a class="nav-link" href="{% url 'main_app:about' %}">About</a></li>
+            </ul>
+    </nav>
     <!-- NAVBAR END -->
 {% block body_block %}
 {% endblock %}
-
-    <div>
-        <ul>                 
-            <li><a href="{% url 'main_app:about' %}">About</a></li>
-            <li><a href="{% url 'main_app:index' %}">Index</a></li>
-            <li><a href="{% url 'main_app:search' %}">Search</a></li>
-        </ul>
-    </div>
-
 </body>
 </html>
