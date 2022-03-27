@@ -46,8 +46,28 @@
         <li>#{{ tag.content }} </a></li>
     {% endfor %}
     </ul>
-        {% else %}
+    {% else %}
     <h2> This recipe has no attached tags.</h2>
-        {% endif %}
+    {% endif %}
+    
+    
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page">Comments</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Add comment</a>
+        </li>
+    </ul>
+    {% if comments %}
+        {% for comment in comments %}
+        <div class="container border rounded" style="margin-bottom:2.5px;margin-top:2.5px">
+            <span class="badge rounded-pill bg-success">{{comment.author}}</span><p class="text-muted">{{comment.time_posted}}</p>
+            <p>{{comment.content}}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="padding-left:0.5%"> There are no comments </p>
+    {% endif %}
 </div> <!-- end of dish page div -->
 {% endblock %}

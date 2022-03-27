@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .models import Recipe
+from .models import Recipe, Comment
 
 
 def index(request):
@@ -16,12 +16,12 @@ def index(request):
 
 
 def render_recipe(request, recipe_title_slug):
-    context = {"recipe" : None}
+    context = {"recipe" : None, "comments" : None}
     try:
         context["recipe"] = Recipe.objects.get(title_slug=recipe_title_slug)
     except Recipe.DoesNotExist:
         pass
-
+    context["comments"] = Comment.objects.filter(recipe=context["recipe"]).order_by("time_posted") #Should get all comments which have this recipe as FK
     return render(request, "main_app/recipe.html", context=context)
 
 
