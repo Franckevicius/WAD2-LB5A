@@ -7,7 +7,7 @@
     <input  id="ingredient_input" type="text" name="ingredient_input"  placeholder="Input space separated ingredients..." >
 </div>
 
-<div id="recipe_search_results" style="display:flex; flex:row; width:auto; padding:1.5%;">
+<div id="recipe_search_results" style="height:auto">
     <ul class="container-xs d-flex flex-row flex-wrap justify-content-left"> <!-- unordered list of "Card" bstrap objs -->
     {% if recipes %}                
         {% for recipe in recipes %}    
