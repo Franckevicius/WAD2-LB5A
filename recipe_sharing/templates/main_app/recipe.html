@@ -20,13 +20,15 @@
     {% endif %}
 
     {% if recipe.picture %}
-        <img src="{{recipe.picture.url}}" alt="recipe_picture">
+        <div style="display:flex;">
+            <img src="{{recipe.picture.url}}" alt="recipe_picture" style="max-width:100%">
+        </div>
     {% endif %}
 
     {% if recipe.recipetoingredient_set.all%}
         <h5 class="display-6"> This recipe contains the following ingredients: </h3>
         {% for map in recipe.recipetoingredient_set.all %}
-        <ul class="list-group" style="max-width: 7%">
+        <ul class="list-group d-flex flex-wrap" style="max-width: 7%">
             <li class="list-group-item">{{ map.ingredient.name }}  <small class="text-muted">  {{ map.ingredient_quantity }} {{ map.ingredient.units }}</small></li>
         </ul>
         {% endfor %}
