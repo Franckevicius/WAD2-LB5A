@@ -6,11 +6,11 @@
 {% endblock %}
 
 {% block body_block %}
-    <div class="container d-flex justify-content-center flex-column">
+    <div class="container d-flex justify-content-center flex-column flex-wrap">
             {% if recipes %}
                 <ul class="card-group flex-wrap justify-content-evenly">
                 {% for recipe in recipes %}
-                    <li class="card" style="width: 18rem;height: 30rem; overflow:hidden;">
+                    <li class="card" style="width: 18rem;min-width: 18rem;max-width 18rem;height: 30rem; overflow:hidden;">
                         <img src="{{recipe.picture.url}}" class="card-img-top" style="max-height:50%"alt="recipe_pic">
                         <div class="card-body"style="max-height:50%">
                             <h5 class="card-title">{{recipe.title}}</h5>
