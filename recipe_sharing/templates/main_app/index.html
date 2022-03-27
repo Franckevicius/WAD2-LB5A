@@ -8,15 +8,16 @@
 {% block body_block %}
     <div class="container d-flex justify-content-center flex-column">
             {% if recipes %}
-                <ul class="container-fluid d-flex flex-row flex-wrap justify-content-evenly">
+                <ul class="card-group flex-wrap justify-content-evenly">
                 {% for recipe in recipes %}
-                    <li class="card" style="width: 18rem;">
-                        <img src="{{recipe.picture.url}}" class="card-img-top" alt="recipe_pic">
-                        <div class="card-body">
+                    <li class="card" style="width: 18rem;height: 30rem; overflow:hidden;">
+                        <img src="{{recipe.picture.url}}" class="card-img-top" style="max-height:50%"alt="recipe_pic">
+                        <div class="card-body"style="max-height:50%">
                             <h5 class="card-title">{{recipe.title}}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">by {{recipe.author}}</h6>
-                            <h6 class="card-subtitle mb-2 text-muted">imgsrc {{recipe.picture.url}}</h6>
-                            <p class="card-text">{{recipe.description}}</p>
+                            <div style="overflow:hidden;max-height:90%;">
+                                <p class="card-text"style="display:-webkit-box;max-width:90%;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow-hidden;">{{recipe.description}}</p>
+                            </div>
                             <a href="{% url 'main_app:render_recipe' recipe.title_slug %}" class="btn btn-primary">Go to recipe</a>
                         </div>
                     </li>
