@@ -17,7 +17,7 @@
                             <h6 class="card-subtitle mb-2 text-muted">by {{recipe.author}}</h6>
                             <h6 class="card-subtitle mb-2 text-muted">imgsrc {{recipe.picture.url}}</h6>
                             <p class="card-text">{{recipe.description}}</p>
-                            <a href="{% url 'main_app:render_recipe' recipe.title_slug %}" class="btn btn-primary">Go to recipe.</a>
+                            <a href="{% url 'main_app:render_recipe' recipe.title_slug %}" class="btn btn-primary">Go to recipe</a>
                         </div>
                     </li>
                 {% endfor %}

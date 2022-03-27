@@ -16,11 +16,11 @@
 </head>
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg justify-content-evenly align-items-center">               
-            <ul class="nav nav-fill">
+    <nav class="navbar navbar-expand-lg d-flex justify-content-center">               
+            <ul class="nav nav-fill d-flex justify-content-">
                 <li class="nav-item"><a class="nav-link" href="{% url 'main_app:search' %}">Search</a></li>
                 <li class="nav-item"><a class="nav-link disabled">Saved</a></li> <!-- Currently a placeholder, until view works -->
-                <a class="navbar-brand" href="{% url 'main_app:index' %}">E-Recipe</a>
+                <a class="navbar-brand display-1" href="{% url 'main_app:index' %}">E-Recipe</a>
                 <li class="nav-item"><a class="nav-link disabled">Login</a></li> <!-- Currently a placeholder, until view works -->
                 <li class="nav-item"><a class="nav-link" href="{% url 'main_app:about' %}">About</a></li>
             </ul>

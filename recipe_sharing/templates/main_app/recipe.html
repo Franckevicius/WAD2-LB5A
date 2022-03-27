@@ -6,35 +6,48 @@
 {% endblock %}
 
 {% block body_block %}
-<ul>
+<div class="container-fluid"> <!-- Entire dish page div -->
     {% if recipe %}
-        <h3>{{ recipe.title }}</h3>        
-        Recipe has estimated price of {{ recipe.estimated_price }} / 3 <br>
-        Recipe has estimated nutrition of {{ recipe.estimated_nutrition}} / 3 <br> <br>
-        It should take {{ recipe.minutes_to_prepare }}  mins to prepare
+        <h2 class="display-3">{{ recipe.title }}</h2>
+        <p class="text-muted"> by {{ recipe.author }}</p>  
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">⌚ {{ recipe.minutes_to_prepare }}  mins</li>
+            <li class="list-group-item">£ {{ recipe.estimated_price }} / 3</li>
+            <li class="list-group-item">𓇣 {{ recipe.estimated_nutrition}} / 3</li>
+        </ul>
     {% else %}
         Unknown recipe
     {% endif %}
 
+    {% if recipe.picture %}
+        <img src="{{recipe.picture.url}}" alt="recipe_picture">
+    {% endif %}
+
     {% if recipe.recipetoingredient_set.all%}
-        <h2> This recipe contains the following ingredients: </h2>
+        <h5 class="display-6"> This recipe contains the following ingredients: </h3>
         {% for map in recipe.recipetoingredient_set.all %}
-            <li>{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }} </a></li>
+        <ul class="list-group" style="max-width: 7%">
+            <li class="list-group-item">{{ map.ingredient.name }}  <small class="text-muted">  {{ map.ingredient_quantity }} {{ map.ingredient.units }}</small></li>
+        </ul>
         {% endfor %}
+        </ul>
     {% else %}
          <li><strong>Recipe has no attached ingredients present.</strong></li>
     {% endif %}
+    </ul>
+
+    <h5 class="display-6">Instructions:</h5>
+    <p>{{ recipe.description }}</p>
 
     {% if recipe.tags.all%}
-    <h2> This recipe contains the following tags: </h2>
+    <h5 class="display-6">Tags:</h2>
+    <ul style="list-style: none">
     {% for tag in recipe.tags.all %}
         <li>#{{ tag.content }} </a></li>
     {% endfor %}
+    </ul>
         {% else %}
     <h2> This recipe has no attached tags.</h2>
         {% endif %}
-
-    <h2>Instructions:</h2>
-    {{ recipe.description }}
-</ul>
+</div> <!-- end of dish page div -->
 {% endblock %}
