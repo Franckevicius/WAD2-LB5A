@@ -103,7 +103,7 @@ def populate():
             "estimated_nutrition":1, 
             "estimated_price":1, 
             "minutes_to_prepare":15,
-            "picture":"pictures_placeholder/1.png",
+            "picture":"recipe1.jpg",
             "users_who_saved":[user_objects[1], user_objects[2]],
             "tags":[tags[0], tags[3]]
         },
@@ -116,7 +116,7 @@ def populate():
             "estimated_nutrition":2, 
             "estimated_price":2, 
             "minutes_to_prepare":25,
-            "picture":"pictures_placeholder/2.png",
+            "picture":"recipe2.jpg",
             "users_who_saved":[user_objects[0]],
             "tags":[tags[1], tags[3]]
         },
@@ -129,7 +129,7 @@ def populate():
             "estimated_nutrition":3,
             "estimated_price":3,
             "minutes_to_prepare":35,
-            "picture":"pictures_placeholder/3.png",
+            "picture":"recipe3.jpg",
             "users_who_saved":[],
             "tags":[tags[1], tags[2]]
         },
@@ -142,7 +142,7 @@ def populate():
             "estimated_nutrition":2, 
             "estimated_price":2,
             "minutes_to_prepare":45,
-            "picture":"pictures_placeholder/4.png",
+            "picture":"recipe4.jpg",
             "users_who_saved":[user_objects[0], user_objects[1], user_objects[2]],
             "tags":[]
         },        
