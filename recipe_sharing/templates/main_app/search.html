@@ -3,20 +3,29 @@
 {% endblock %}
 
 {% block body_block %}
+<div id="search_div" style="display:flex; justify-content:right; padding:1.5%">
+    <input  id="ingredient_input" type="text" name="ingredient_input"  placeholder="Input space separated ingredients..." >
+</div>
 
-<input  id="ingredient_input" type="text" name="ingredient_input"  placeholder="Input space separated ingredients..." >
-
-<div id="recipe_search_results">
+<div id="recipe_search_results" style="height:auto">
+    <ul class="container-xs d-flex flex-row flex-wrap justify-content-left"> <!-- unordered list of "Card" bstrap objs -->
     {% if recipes %}                
         {% for recipe in recipes %}    
-            <h4> <a href="{% url 'main_app:render_recipe' recipe.title_slug %}">{{ recipe.title }}</a> </h4>                
+            <li class="card" style="width: 18rem;">
+                <img src="{{recipe.picture.url}}" class="card-img-top" alt="recipe_pic">  
+                <div class="card-body">
+                    <h5 class="card-title"> <a href="{% url 'main_app:render_recipe' recipe.title_slug %}">{{ recipe.title }}</a> </h5>
+                </div>
+                <ul class="list-group list-group-flush">           
             {% for map in recipe.recipetoingredient_set.all %}
-                <li>{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }}</li>
+                    <li class="list-group-item">{{ map.ingredient.name }}: {{ map.ingredient_quantity }} {{ map.ingredient.units }}</li>
             {% endfor %}
+            </li>
         {% endfor %}        
     {% else %}
         No recipe results
     {% endif %}
+    </ul> <!-- end of card list -->
 </div>
 
 {% endblock %}

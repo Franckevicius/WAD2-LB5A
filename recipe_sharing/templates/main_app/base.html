@@ -1,28 +1,32 @@
 {% load static %}
+{% load staticfiles %}
 
 <!DOCTYPE html>
 <html>
 <head>    
+    <link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet"> <!-- Added bootstrap css support -->
+    <script src="{% static 'js/bootstrap.min.js'%}"></script> <!-- Added bootstrap js support (all files are in /static/js or css) -->
     <script type="text/javascript" src="{% static 'jquery-3.6.0.min.js' %}"></script> 
     <script type="text/javascript" src="{% static 'main_app-jquery.js' %}"></script>    
 <title>
 {% block title_block %}
-    Base title block    
+    Base    
 {% endblock %}
 </title>
 </head>
 <body>
-
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg d-flex justify-content-center">               
+            <ul class="nav nav-fill d-flex justify-content-">
+                <li class="nav-item"><a class="nav-link" href="{% url 'main_app:search' %}">Search</a></li>
+                <li class="nav-item"><a class="nav-link disabled">Saved</a></li> <!-- Currently a placeholder, until view works -->
+                <a class="navbar-brand display-1" href="{% url 'main_app:index' %}">E-Recipe</a>
+                <li class="nav-item"><a class="nav-link disabled">Login</a></li> <!-- Currently a placeholder, until view works -->
+                <li class="nav-item"><a class="nav-link" href="{% url 'main_app:about' %}">About</a></li>
+            </ul>
+    </nav>
+    <!-- NAVBAR END -->
 {% block body_block %}
 {% endblock %}
-
-    <div>
-        <ul>                 
-            <li><a href="{% url 'main_app:about' %}">About</a></li>
-            <li><a href="{% url 'main_app:index' %}">Index</a></li>
-            <li><a href="{% url 'main_app:search' %}">Search</a></li>
-        </ul>
-    </div>
-
 </body>
 </html>
